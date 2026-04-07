@@ -2,8 +2,6 @@
         logs logs-app logs-publisher logs-consumer \
         migrate shell-app shell-postgres ps
 
-# ─── Запуск / остановка ───────────────────────────────────────────────────────
-
 ## Собрать образы и запустить все сервисы
 up:
 	docker compose up -d --build
@@ -24,8 +22,6 @@ restart:
 ps:
 	docker compose ps
 
-# ─── Логи ─────────────────────────────────────────────────────────────────────
-
 ## Все логи (follow)
 logs:
 	docker compose logs -f
@@ -42,8 +38,6 @@ logs-publisher:
 logs-consumer:
 	docker compose logs -f consumer
 
-# ─── Миграции ─────────────────────────────────────────────────────────────────
-
 ## Применить миграции Alembic
 migrate:
 	docker compose run --rm migrate
@@ -52,8 +46,6 @@ migrate:
 migration:
 	docker compose run --rm -w /app/src migrate \
 		alembic -c alembic.ini revision --autogenerate -m "$(name)"
-
-# ─── Утилиты ──────────────────────────────────────────────────────────────────
 
 ## Открыть bash в контейнере app
 shell-app:
