@@ -1,0 +1,7 @@
+# App
+APP_CONFIG__APP__SERVICE_NAME=payment-service
+APP_CONFIG__APP__HOST=0.0.0.0
+APP_CONFIG__APP__PORT=8000
+
+# Auth
+APP_CONFIG__AUTH__API_KEY=secret-api-key
