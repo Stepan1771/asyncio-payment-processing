@@ -1,9 +1,8 @@
 from datetime import (
     datetime,
-    timezone, UTC,
+    UTC,
 )
 
-from uuid import UUID
 
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -35,7 +34,7 @@ class OutboxRepository(BaseRepository):
         )
         return list(result.scalars().all())
 
-    async def mark_processed_bulk(self, ids: list):
+    async def mark_processed_bulk(self, ids: list) -> None:
         await self.session.execute(
             update(Outbox)
             .where(Outbox.id.in_(ids))

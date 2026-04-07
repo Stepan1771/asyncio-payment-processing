@@ -4,10 +4,12 @@ import uvicorn
 
 from fastapi import FastAPI
 
-
 from api import api_router
+
 from core.config import app_settings
+
 from core.lifespan import lifespan
+
 
 BASE_DIR = Path(__file__).resolve().parent
 

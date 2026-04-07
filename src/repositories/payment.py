@@ -12,7 +12,7 @@ from .base import BaseRepository
 
 
 class PaymentRepository(BaseRepository):
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         super().__init__(session=session, model=Payment)
 
     async def create_payment(self, payment: Payment) -> Payment:

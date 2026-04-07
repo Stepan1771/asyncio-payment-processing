@@ -13,12 +13,16 @@ class PaymentDlgConsumer:
             broker,
             queue: RabbitQueue,
             exchange: RabbitExchange,
-    ):
+    ) -> None:
         self.broker = broker
         self.queue = queue
         self.exchange = exchange
 
-    async def handle(self, payload: dict, message: RabbitMessage):
+    async def handle(
+            self,
+            payload: dict,
+            message: RabbitMessage,
+    ) -> None:
         payment_uid = payload.get("payment_uid", "unknown")
 
         logger.critical(
@@ -34,5 +38,8 @@ class PaymentDlgConsumer:
             queue=self.queue,
             exchange=self.exchange,
         )
-        async def handler(payload: dict, message: RabbitMessage):
+        async def handler(
+                payload: dict,
+                message: RabbitMessage,
+        ) -> None:
             await self.handle(payload, message)

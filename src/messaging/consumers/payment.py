@@ -48,7 +48,10 @@ class PaymentConsumer:
         return random.random() < 0.9
 
     @staticmethod
-    async def _parse_message(payload: dict, message: RabbitMessage):
+    async def _parse_message(
+            payload: dict,
+            message: RabbitMessage,
+    ) -> tuple[str, int, str] | None:
         retry_count = int(message.headers.get("x-retry-count", 0))
         payment_uid = payload.get("payment_uid")
         webhook_url = payload.get("webhook_url")
@@ -60,7 +63,7 @@ class PaymentConsumer:
 
         return payment_uid, retry_count, webhook_url
 
-    async def _update_status(self, payment_uid: str):
+    async def _update_status(self, payment_uid: str) -> str:
         payment_uid = UUID(payment_uid)
 
         success = await self._payment_simulator()
@@ -77,7 +80,11 @@ class PaymentConsumer:
 
         return new_status.value
 
-    async def _send_webhook(self, webhook_url: str, payload: dict):
+    async def _send_webhook(
+            self,
+            webhook_url: str,
+            payload: dict,
+    ) -> None:
         if not webhook_url:
             logger.warning("Webhook URL не указан - пропускаем отправку")
             return
@@ -114,7 +121,11 @@ class PaymentConsumer:
             )
             await message.nack(requeue=False)
 
-    async def handler(self, payload: dict, message: RabbitMessage):
+    async def handler(
+            self,
+            payload: dict,
+            message: RabbitMessage,
+    ) -> None:
         parsed = await self._parse_message(payload, message)
         if not parsed:
             return
@@ -148,10 +159,13 @@ class PaymentConsumer:
                 payment_uid,
             )
 
-    def register(self):
+    def register(self) -> None:
         @self.broker.subscriber(
             queue=self.queue,
             exchange=self.exchange,
         )
-        async def main_handler(payload: dict, message: RabbitMessage):
+        async def main_handler(
+                payload: dict,
+                message: RabbitMessage,
+        ) -> None:
             await self.handler(payload=payload, message=message)

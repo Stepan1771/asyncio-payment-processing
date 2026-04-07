@@ -1,7 +1,5 @@
 services:
 
-  # ─── Инфраструктура ────────────────────────────────────────────────────────
-
   postgres:
     image: postgres:16-alpine
     container_name: postgres
@@ -38,8 +36,6 @@ services:
       timeout: 5s
       retries: 10
 
-  # ─── Миграции (запускается однократно) ────────────────────────────────────
-
   migrate:
     build: .
     container_name: migrate
@@ -51,8 +47,6 @@ services:
       postgres:
         condition: service_healthy
     restart: "no"
-
-  # ─── Приложение (FastAPI) ─────────────────────────────────────────────────
 
   app:
     build: .
@@ -73,8 +67,6 @@ services:
       migrate:
         condition: service_completed_successfully
 
-  # ─── Publisher (Outbox Worker) ────────────────────────────────────────────
-
   publisher:
     build: .
     container_name: publisher
@@ -94,8 +86,6 @@ services:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
-
-  # ─── Consumer (RabbitMQ Worker) ───────────────────────────────────────────
 
   consumer:
     build: .

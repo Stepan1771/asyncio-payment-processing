@@ -1,9 +1,13 @@
 import asyncio
 
 from core.config import broker_settings
+
 from core.db.db_client import db_client
+
 from core.logging import logger
+
 from core.rabbitmq import RabbitMQBroker
+
 from messaging.publishers.outbox import OutboxPublisher
 
 

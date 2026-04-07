@@ -1,7 +1,9 @@
 from core.db import UnitOfWork
 
 from core.logging import logger
+
 from schemas.outbox import CreateOutboxEvent
+
 from schemas.payment import (
     CreatePaymentRequest,
     CreatePaymentDBSchema,
@@ -21,7 +23,7 @@ class PaymentService:
             self,
             schema: CreatePaymentRequest,
             idempotency_key: str,
-    ):
+    ) -> CreatePaymentResponse:
         logger.info("Создание платежа и ивента")
 
         payment_exist = await self.uow.payment_repository.get_by_idempotency_key(
@@ -67,8 +69,11 @@ class PaymentService:
             created_at=payment.created_at,
         )
 
-    async def get_payment_by_id(self, payment_id: int) -> PaymentResponse | None:
-        payment = await self.uow.payment_repository.get_by_id(payment_id)
+    async def get_payment_by_id(
+            self,
+            payment_id: int,
+    ) -> PaymentResponse | None:
+        payment = await self.uow.payment_repository.get_by_id(obj_id=payment_id)
         if not payment:
             return None
         return PaymentResponse.from_orm_model(payment)

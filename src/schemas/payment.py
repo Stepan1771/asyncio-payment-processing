@@ -1,11 +1,26 @@
 from datetime import datetime
+
 from decimal import Decimal
-from typing import Any, Dict, Optional
+
+from typing import (
+    Any,
+    Dict,
+    Optional,
+)
+
 from uuid import UUID
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import (
+    BaseModel,
+    Field,
+    ConfigDict,
+)
 
-from models.payment import Currency, Payment, PaymentStatus
+from models.payment import (
+    Currency,
+    Payment,
+    PaymentStatus,
+)
 
 
 class CreatePaymentRequest(BaseModel):
@@ -17,7 +32,6 @@ class CreatePaymentRequest(BaseModel):
 
 
 class CreatePaymentDBSchema(BaseModel):
-    """Внутренняя схема для вставки в БД (маппинг metadata→meta, добавление idempotency_key)."""
     amount: Decimal
     currency: Currency
     description: str
@@ -56,7 +70,6 @@ class PaymentResponse(BaseModel):
 
     @classmethod
     def from_orm_model(cls, payment: Payment) -> "PaymentResponse":
-        """Маппинг ORM-модели → схема (meta → metadata)."""
         return cls(
             id=payment.id,
             uid=payment.uid,

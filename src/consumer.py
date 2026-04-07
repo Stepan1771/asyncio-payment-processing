@@ -3,11 +3,17 @@ import asyncio
 from faststream import FastStream
 
 from core.config import consumer_settings
+
 from core.httpx.httpx_client import httpx_client
+
 from core.logging import logger
+
 from core.rabbitmq import RabbitMQBroker
+
 from messaging.consumers.payment import PaymentConsumer
+
 from messaging.consumers.payment_dlg import PaymentDlgConsumer
+
 
 rmq = RabbitMQBroker()
 

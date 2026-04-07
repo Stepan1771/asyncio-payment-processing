@@ -23,7 +23,7 @@ class OutboxPublisher:
         self.exchange = exchange
         self._stopped = asyncio.Event()
 
-    async def _publish_event(self, event):
+    async def _publish_event(self, event) -> None:
         logger.info(f"Публикация ивента: outbox_event_id - {event.id}")
         await self.broker.publish(
             message=event.payload,
@@ -72,7 +72,7 @@ class OutboxPublisher:
 
             return len(success_ids)
 
-    async def start(self):
+    async def start(self) -> None:
         logger.info("Запуск outbox worker")
 
         while not self._stopped.is_set():
@@ -88,6 +88,6 @@ class OutboxPublisher:
                 logger.exception("Outbox loop ошибка")
                 await asyncio.sleep(publisher_settings.outbox_worker.error_backoff)
 
-    async def stop(self):
+    async def stop(self) -> None:
         logger.info("Остановка outbox worker")
         self._stopped.set()
